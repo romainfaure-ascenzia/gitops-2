@@ -1,0 +1,48 @@
+﻿apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: prod
+
+resources:
+  - ../../base
+
+namePrefix: prod-
+
+commonLabels:
+  environment: prod
+
+replicas:
+  - name: nginx
+    count: 3
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: nginx
+      spec:
+        template:
+          spec:
+            containers:
+            - name: nginx
+              resources:
+                requests:
+                  memory: "128Mi"
+                  cpu: "200m"
+                limits:
+                  memory: "256Mi"
+                  cpu: "500m"
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: nginx
+      spec:
+        type: LoadBalancer
+
+configMapGenerator:
+  - name: nginx-config
+    literals:
+      - ENV=production
+      - LOG_LEVEL=warn
