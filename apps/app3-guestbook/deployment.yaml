@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: app3-guestbook
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-ui
+  namespace: app3-guestbook
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: guestbook-ui
+  template:
+    metadata:
+      labels:
+        app: guestbook-ui
+    spec:
+      containers:
+      - name: guestbook-ui
+        image: gcr.io/heptio-images/ks-guestbook-demo:0.2
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guestbook-ui
+  namespace: app3-guestbook
+spec:
+  selector:
+    app: guestbook-ui
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer
