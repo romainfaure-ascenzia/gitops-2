@@ -39,3 +39,6 @@ configMapGenerator:
     literals:
       - ENV=development
       - LOG_LEVEL=debug
+images:
+  - name: nginx
+    newTag: 1.26-alpine
