@@ -46,3 +46,7 @@ configMapGenerator:
     literals:
       - ENV=production
       - LOG_LEVEL=warn
+
+images:
+  - name: nginx
+    newTag: 1.26-alpine
