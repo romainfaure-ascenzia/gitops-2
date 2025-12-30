@@ -1,0 +1,41 @@
+﻿apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: prod
+
+resources:
+  - ../../base
+
+namePrefix: prod-
+
+commonLabels:
+  environment: prod
+
+replicas:
+  - name: redis
+    count: 3
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: redis
+      spec:
+        template:
+          spec:
+            containers:
+            - name: redis
+              resources:
+                requests:
+                  memory: "128Mi"
+                  cpu: "200m"
+                limits:
+                  memory: "256Mi"
+                  cpu: "500m"
+
+configMapGenerator:
+  - name: redis-config
+    literals:
+      - ENV=production
+      - MAXMEMORY=256mb
