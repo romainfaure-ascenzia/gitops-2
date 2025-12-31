@@ -1,0 +1,49 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit
+  labels:
+    app: streamlit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit
+  template:
+    metadata:
+      labels:
+        app: streamlit
+    spec:
+      containers:
+      - name: streamlit
+        image: rom55555/streamlit-gitops:1.0.0
+        ports:
+        - containerPort: 8501
+        env:
+        - name: ENVIRONMENT
+          value: "dev"
+        - name: APP_VERSION
+          value: "1.0.0"
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /_stcore/health
+            port: 8501
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /_stcore/health
+            port: 8501
+          initialDelaySeconds: 5
+          periodSeconds: 5

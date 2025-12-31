@@ -1,0 +1,22 @@
+﻿apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app4-streamlit-staging
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: multi-env
+  source:
+    repoURL: https://github.com/romainfaure-ascenzia/gitops-2
+    targetRevision: main
+    path: apps/app4-streamlit/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: staging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true

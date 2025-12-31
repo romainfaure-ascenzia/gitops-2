@@ -1,0 +1,22 @@
+﻿apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app4-streamlit-prod
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: multi-env
+  source:
+    repoURL: https://github.com/romainfaure-ascenzia/gitops-2
+    targetRevision: main
+    path: apps/app4-streamlit/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
