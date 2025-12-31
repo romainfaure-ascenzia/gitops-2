@@ -13,7 +13,7 @@ commonLabels:
 
 replicas:
   - name: streamlit
-    count: 3
+    count: 2
 
 patches:
   - patch: |-
