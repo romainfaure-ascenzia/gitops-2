@@ -1,6 +1,8 @@
-﻿apiVersion: argoproj.io/v1alpha1
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
   name: app1-nginx-dev
   namespace: argocd
   finalizers:
