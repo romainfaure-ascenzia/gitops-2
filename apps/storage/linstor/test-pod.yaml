@@ -1,0 +1,16 @@
+﻿apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod-linstor
+spec:
+  containers:
+  - name: test
+    image: busybox
+    command: ["sh", "-c", "echo 'Success!' > /data/test.txt && sleep 3600"]
+    volumeMounts:
+    - name: data
+      mountPath: /data
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: test-final

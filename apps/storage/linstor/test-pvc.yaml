@@ -1,0 +1,11 @@
+﻿apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-final
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: linstor-simple
+  resources:
+    requests:
+      storage: 1Gi
